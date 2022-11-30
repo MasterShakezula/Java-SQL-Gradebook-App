@@ -43,5 +43,5 @@ end if;
 END$$;
 
 DELIMITER ;
-call Calculate_Grades('BME-4050L');
+call Calculate_Grades('BME-4050L'); -- test
 
