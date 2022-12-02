@@ -1,4 +1,4 @@
-package gradebook.db;
+package fiu.gradebook;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,19 +48,19 @@ public class DBConnection {
 			openConnection();
 		
 		try {
-			String selectQuery = "SELECT E.Section_No, E.Course, Course_Name, Final_Grade, Total_Points FROM ENROLLMENT E INNER JOIN SECTION S "
+			String selectQuery = "SELECT E.Section_No, E.Course, CName, Final_Grade, Total_Points FROM ENROLLMENT E INNER JOIN SECTION S "
 					+ "ON E.Section_No = S.Section_No INNER JOIN COURSE C ON S.Course = C.Course_Id WHERE E.Student = ?";
 			PreparedStatement prepSelectStmt = conn.prepareStatement(selectQuery);
 			prepSelectStmt.setString(1, studentId);
 			ResultSet rs = prepSelectStmt.executeQuery();
 			if(rs.next() ) {
 				studentFound = true;
-				System.out.println("Section, Course, Course_Name, Final_Grade, Total_Points");
-				System.out.println(rs.getString("E.Section_No")+","+rs.getString("E.Course")+","+rs.getString("Course_Name")+","
+				System.out.println("Section, Course, CName, Final_Grade, Total_Points");
+				System.out.println(rs.getString("E.Section_No")+","+rs.getString("E.Course")+","+rs.getString("CName")+","
 						+rs.getString("Final_Grade")+","+rs.getFloat("Total_Points"));
 			}
 			while(rs.next()) {
-				System.out.println(rs.getString("E.Section_No")+","+rs.getString("E.Course")+","+rs.getString("Course_Name")+","
+				System.out.println(rs.getString("E.Section_No")+","+rs.getString("E.Course")+","+rs.getString("CName")+","
 						+rs.getString("Final_Grade")+","+rs.getFloat("Total_Points"));
 			}
 		}

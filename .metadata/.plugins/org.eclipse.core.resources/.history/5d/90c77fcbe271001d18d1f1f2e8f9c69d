@@ -1,0 +1,128 @@
+package gradebook.db;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+
+public class DBConnection {
+	private String username = "gradebook-admin";
+	private String password = "Grad3B00k!";
+	private String dbName = "Gradebook";
+	private String hostname = "localhost";
+	private Connection conn = null;
+	
+	public void openConnection()
+	{
+		if (conn == null)
+		{
+			StringBuffer connectionString = new StringBuffer("jdbc:mysql://");
+			connectionString.append(hostname+"/");
+			connectionString.append(dbName);
+			connectionString.append("?user="+username);
+			connectionString.append("&password="+password);
+			try
+			{
+				conn = DriverManager.getConnection(connectionString.toString());
+				
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	public void closeConnection()
+	{
+		if (conn != null)
+		{
+			try
+			{
+				conn.close();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	public boolean getStudentEnrollment(String studentId)
+	{
+		boolean studentFound = false;
+		if(conn == null) openConnection();
+		try
+		{
+			String selectQuery = "SELECT e.Section_No as Section,Course_ID,Last_Name as Course_Name, Final_Grade, Total_Points " 
+					+ "FROM ENROLLMENT e INNER JOIN Section s ON e.Section_No = s.Section_No INNER JOIN Course c ON s.Course = c.Course_Id "+
+					"WHERE e.Student = ?";
+			PreparedStatement prepSelectStmt = conn.prepareStatement(selectQuery);
+			prepSelectStmt.setString(1, studentId);
+			ResultSet rs = prepSelectStmt.executeQuery();
+			if (rs.next())
+			{
+				studentFound = true;
+				System.out.println("Section, Course_Id, Course_Name, Letter Grade, Points");
+				System.out.println(rs.getString("Section")+","
+				+rs.getString("Course_ID") + "," 
+				+ rs.getString("Course_Name") + "," 
+				+ rs.getString("Final_Grade") + "," 
+				+ rs.getFloat("Total_Points"));
+			}
+			while (rs.next())
+			{
+				System.out.println("Section, Course_Id, Course_Name, Letter Grade, Points");
+				System.out.println(rs.getString("Section")+","
+				+rs.getString("Course_ID") + "," 
+				+ rs.getString("Course_Name") + "," 
+				+ rs.getString("Final_Grade") + "," 
+				+ rs.getFloat("Total_Points"));
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex.getMessage());
+		}
+		return studentFound;
+	}
+	public boolean getSectionEnrollment(String sectionId)
+	{
+		boolean sectionFound = false;
+		if (conn == null) openConnection();
+		try
+		{
+			String selectQuery = "SELECT Student, First_Name,Last_Name, Final_Grade, Total_Points "
+					+ "FROM ENROLLMENT e INNER JOIN STUDENT s ON e.Student = s.Panther_Id WHERE e.Section_No = ?";
+			PreparedStatement prepSelectStmt = conn.prepareStatement(selectQuery);
+			prepSelectStmt.setString(1, sectionId);
+			ResultSet rs = prepSelectStmt.executeQuery();
+			if (rs.next())
+			{
+				sectionFound = true;
+				System.out.println("Student_Id, Name, Letter Grade, Points");
+				System.out.println(rs.getString("Student") + "," 
+				+ rs.getString("First_Name") + " " 
+				+ rs.getString("Last_Name") + "," 
+				+ rs.getString("Final_Grade") + "," 
+				+ rs.getFloat("Total_Points"));
+			}
+			while (rs.next())
+			{
+				System.out.println("Student_Id, Name, Letter Grade, Points");
+				System.out.println(rs.getString("Student") + "," 
+				+ rs.getString("First_Name") + " " 
+				+ rs.getString("Last_Name") + "," 
+				+ rs.getString("Final_Grade") + "," 
+				+ rs.getFloat("Total_Points"));
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			System.out.println(ex.getMessage());
+		}
+		return sectionFound;
+	}
+	
+
+}

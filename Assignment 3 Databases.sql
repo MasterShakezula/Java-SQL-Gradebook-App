@@ -2,8 +2,8 @@
 -- Part 1 Create User
 
 CREATE USER 'gradebook-admin' IDENTIFIED BY 'Grad3B00k!';
-GRANT ALL ON gradebook to 'gradebook-admin';
-
+GRANT ALL ON gradebook.* to 'gradebook-admin';
+drop user 'gradebook-admin';
 -- Part 2 Triggers
 
 use gradebook;
