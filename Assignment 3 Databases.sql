@@ -7,41 +7,36 @@ drop user 'gradebook-admin';
 -- Part 2 Triggers
 
 use gradebook;
+
+
 DELIMITER $$
-create procedure `Calculate_Grades` (in course_id varchar(20) )
-begin
-declare letter_grade char;
-declare A_Min float; declare B_Min float; declare C_Min float; declare D_Min float; declare grade float;
-declare stud varchar(10);
-declare sect int;
-declare finished integer default 0;
-declare students_cursor cursor for
-select e.Total_Points, e.Section_No, e.Student, c.A_Min, c.B_Min, c.C_Min, c.D_Min from enrollment e
-inner join section s on e.Section_No = s.Section_No 
-inner join course c on s.Course = c.Course_Id 
-where s.Course = Course_Id; --
-declare continue handler for not found set finished = 1;
-start transaction;
-open students_cursor;
-std_loop : loop  fetch students_cursor into stud, sect, A_Min, B_Min, C_Min, D_Min, grade;
-if finished = 1 then leave std_loop;
-end if;
-			if (grade >= A_Min) then
-				set letter_grade = 'A';
-			elseif (grade >= B_Min) then
-				set letter_grade = 'B';
-			elseif (grade >= C_Min) then
-				set letter_grade = 'C';
-			elseif (grade >= D_Min) then
-				set letter_grade = 'D';
-                end if;
-                update enrollment set Final_Grade = letter_grade where Student = stud and section_No = sect;
-                end loop std_loop;
-                close students_cursor;
+CREATE TRIGGER check_grade_upgrade
+BEFORE UPDATE ON ENROLLMENT
+FOR EACH ROW
+BEGIN
+	DECLARE A float;
+    DECLARE B float;
+    DECLARE C float;
+    DECLARE D float;
+    
+	SELECT A_Min INTO A FROM COURSE WHERE Course_Id = NEW.Course;
+	SELECT B_Min INTO B FROM COURSE WHERE Course_Id = NEW.Course;
+	SELECT C_Min INTO C FROM COURSE WHERE Course_Id = NEW.Course;
+	SELECT D_Min INTO D FROM COURSE WHERE Course_Id = NEW.Course;
 
-
-END$$;
-
+	IF New.Total_Points >= A THEN
+		SET NEW.Final_Grade = 'A';
+	ELSEIF New.Total_Points >= B AND New.Total_Points < A THEN
+		SET NEW.Final_Grade = 'B';
+	ELSEIF New.Total_Points >= C AND New.Total_Points < B THEN
+		SET NEW.Final_Grade = 'C';
+	ELSEIF New.Total_Points >= D AND New.Total_Points < C THEN
+		SET NEW.Final_Grade = 'D';
+	ELSE
+		SET NEW.Final_Grade = 'F';
+	END IF;
+END; $$
 DELIMITER ;
-
-
+update enrollment
+set Total_Points = 88
+where Student = '1234561';
