@@ -13,4 +13,19 @@
 	</section>
 	<section name="JavaElementSearchActions">
 	</section>
+	<section name="OptionalMessageDialog.hide.">
+	</section>
+	<section name="FatJarPackageWizard">
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_SAVE" value="false"/>
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION" value="C:\Users\Samue\OneDrive\Documents\Fall 2022\Databases Assignment 3"/>
+		<item key="FatJarPackageWizardPage.LIBRARY_HANDLING" value="1"/>
+		<item key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME" value="UniversityDBConnectApp - Gradebook"/>
+		<item key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION" value="C:\Users\Samue\OneDrive\Documents\Fall 2022\Databases Assignment 3\Runnable_JAR_File_DB.jar"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Samue\OneDrive\Documents\Fall 2022\Databases Assignment 3\Runnable_JAR_File_DB.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value=".xml"/>
+		</list>
+	</section>
 </section>
