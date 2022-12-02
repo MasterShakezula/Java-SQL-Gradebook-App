@@ -52,9 +52,9 @@ public class DBConnection {
 		if(conn == null) openConnection();
 		try
 		{
-			String selectQuery = "SELECT e.Section_No as Section,Course_ID,Name as Course_Name, Final_Grade, Total_Points " 
-					+ "FROM ENROLLMENT e INNER JOIN Section s ON e.Section_No = s.Section_No INNER JOIN Course c ON s.Course = c.Course_Id "+
-					"WHERE e.Student = ?";
+			String selectQuery = "SELECT E.Section_No as Section,Course_ID,Name as Course_Name, Final_Grade, Total_Points " 
+					+ "FROM ENROLLMENT E INNER JOIN Section S ON E.Section_No = S.Section_No INNER JOIN Course C ON S.Course = C.Course_Id "+
+					"WHERE E.Student = ?";
 			PreparedStatement prepSelectStmt = conn.prepareStatement(selectQuery);
 			prepSelectStmt.setString(1, studentId);
 			ResultSet rs = prepSelectStmt.executeQuery();
@@ -91,7 +91,7 @@ public class DBConnection {
 		try
 		{
 			String selectQuery = "SELECT Student, First_Name,Last_Name, Final_Grade, Total_Points "
-					+ "FROM ENROLLMENT e INNER JOIN STUDENT s ON e.Student = s.Panther_Id WHERE e.Section_No = ?";
+					+ "FROM ENROLLMENT E INNER JOIN STUDENT S ON E.Student = S.Panther_Id WHERE E.Section_No = ?";
 			PreparedStatement prepSelectStmt = conn.prepareStatement(selectQuery);
 			prepSelectStmt.setString(1, sectionId);
 			ResultSet rs = prepSelectStmt.executeQuery();
