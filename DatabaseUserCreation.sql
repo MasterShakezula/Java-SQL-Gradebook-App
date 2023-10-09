@@ -1,4 +1,4 @@
--- Assignment 3.alter
+-- 
 -- Part 1 Create User
 
 CREATE USER 'gradebook-admin' IDENTIFIED BY 'Grad3B00k!';
